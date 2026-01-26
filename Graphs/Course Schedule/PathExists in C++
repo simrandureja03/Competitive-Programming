@@ -1,0 +1,58 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+bool dfs(int node, int destination,
+         vector<vector<int>> &adj,
+         vector<bool> &visited) {
+
+    if (node == destination)
+        return true;
+
+    visited[node] = true;
+
+    for (int neighbor : adj[node]) {
+        if (!visited[neighbor]) {
+            if (dfs(neighbor, destination, adj, visited))
+                return true;
+        }
+    }
+    return false;
+}
+
+int main() {
+    int n;
+    cout << "Enter number of vertices: ";
+    cin >> n;
+
+    int e;
+    cout << "Enter number of edges: ";
+    cin >> e;
+
+    vector<vector<int>> adj(n);
+
+    cout << "Enter edges (u v):\n";
+    for (int i = 0; i < e; i++) {
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+
+    int source, destination;
+    cout << "Enter source and destination: ";
+    cin >> source >> destination;
+
+    vector<bool> visited(n, false);
+
+    bool result = dfs(source, destination, adj, visited);
+
+    if (result)
+        cout << "true\n";
+    else
+        cout << "false\n";
+
+    return 0;
+}
+
+
